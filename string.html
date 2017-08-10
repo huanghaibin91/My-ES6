@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>string</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <script>
+            // JavaScript内部，字符以utf-16格式储存，每个字符固定为2个字节。对于需要4个字节储存的字符（字符Unicode码点大于0xFFFF的字符）
+            // JavaScript会认为它们是两个字符
+            function is32Bit (c) { // codePointAt测试一个字符由两个字节还是四个字节组成
+                return c.codePointAt(0) > 0xFFFF;
+            }
+            // ES6为字符添加了遍历器接口for...of,可以识别大于32位字符
+            for (let codePoint of 'foo') {
+                console.log(codePoint);
+            }
+
+            // ES6的方法跟ES5作用是一样的，只是可以解析32位的字符
+            // ES5: string.charCodeAt(), ES6: string.codePointAt()
+            // ES5: String.fromCharCode(), ES6: String.fromCodePoint()
+            // ES5: string.charAt(), ES6: string.at()
+
+            let s = 'hello world';
+            // 下面三个方法都返回一个布尔值
+            s.startsWith('hello'); // 字符串以什么开始
+            s.endsWith('world'); // 字符串以什么结束
+            s.includes('llo w'); // 字符串包含什么
+
+            s.repeat(2) // 字符串重复几次
+            // 如果两者之和超过了指定的长度，会截去超出的字符串，如果省略第二个参数，会默认使用空格补齐
+            s.padStart(15, 'a'); // 用a把字符串s补齐15个长度，从头补齐
+            s.padEnd(15, 'a'); // 用a把字符串s补齐15个长度，从尾补齐
+            '1'.padEnd(10, '0') // '0000000001', 为数值补齐指定位数
+            '09-12'.padStart(10, 'YYYY-MM-DD') // 'YYYY-09-12',提示字符串格式的作用
+
+            // 模板字符串，用反引号标识，可以用来定义多行字符串，或者在字符串中嵌入变量，变量写在${}中
+            let a = 'hello';
+            let b = `${a} world`; // 'hello world'
+            let c = `2 + 3 = ${2 + 3}`; // 5,${}中可以放入任意JavaScript表达式，也可以调用函数
+        </script>
+    </body>
+</html>

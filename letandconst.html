@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>let and const</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            {
+                let a = 1; // not defined
+                const b = 2; // not defined
+                var c = 3; // 3
+            }
+
+            for (var i = 0; i < 10; i++) {}
+            console.log(i); // 10 用var声明的变量i泄露到全局，当条件不满足时i为10
+            for (let j = 0; j < 10; j++) {}
+            // console.log(j); // not defined
+
+            var a = [];
+            for (var i = 0; i < 10; i++) {
+                a[i] = function () {
+                    console.log(i);
+                };
+            }
+            a[5](); // 不论a[i]()输出都是i，因为i是var声明的，在全局范围都有效
+
+            var a = [];
+            for (let i = 0; i < 10; i++) {
+                a[i] = function () {
+                    console.log(i);
+                };
+            }
+            a[5](); // 5，使用let声明，变量仅在块级作用域中有效
+
+            for (let i = 0; i < 3; i++) { // 两个i独立, 父作用域
+                let i = 'a'; // 子作用域
+                console.log(i); // 输出3次a，说明for循坏中的括号与大括号是两个作用域
+            }
+
+            console.log(foo); // undefined，声明提升了
+            var foo = 'foo'
+            // console.log(bar); // 报错，不会声明提升
+            let bar = 'bar';
+
+            // 如果区块中存在let和const命令，这个区域对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错，这在语法上，称为“暂时性死区”
+            var tmp = 'a';
+            if (true) {
+                tmp = 'b'; // 赋值操作报错，暂时性死区
+                let tmp;
+            }
+            if (true) {
+                tem = 'a';
+                console.log(tem); // 报错
+                let tem;
+                console.log(tem); // undefined
+                tem = 'b';
+                console.log(tem); // b
+            }
+            function bar (x = y, y = 2) { // 在y声明之前将y赋值给x
+                return [x, y];
+            }
+            bar(); // 报错，在y声明之前使用
+
+            // let不允许在相同作用域中重复声明
+            function func (arg) {
+                // let arg; // 报错，重复声明参数
+            }
+            function () {
+                let a = 1;
+                // var a = 2; // 报错，重复声明
+            }
+
+            // 块级作用域
+            // 避免在块级作用域内声明函数。如果确实需要，应该写成函数表达式，而不是函数声明
+            // 函数声明语句
+            {
+                let a = 'a';
+                function f () {
+                    return a;
+                }
+            }
+            // 函数表达式
+            {
+                let a = 'a';
+                f = function () {
+                    return a;
+                }
+            }
+
+            // const声明一个只读的常量。一旦声明，常量的值就不能改变
+            const a; // 报错，常量不能改变，所以声明时就必须赋值
+            const a = 'a';
+            // const保证的并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据等同于常量，但是复合类型如对象数组，对象是可变的，对象的地址是不变的
+            const foo = {};
+            foo.prop = 123; // 成功
+            foo = {} // 报错，foo的地址不可改变，不能把foo指向另一个对象
+        </script>
+    </body>
+</html>

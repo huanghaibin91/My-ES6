@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>function</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <script>
+            // ES5,为函数的参数指定默认值
+            function log (x, y) {
+                y = y || 'world';
+                console.log(x, y);
+            }
+            log('hello')
+            // ES6
+            function log2 (x, y = 'world') {
+                console.log(x, y);
+            }
+            log2('hello');
+            // 使用对象解构赋值的方式指定默认值，只有在函数调用时参数是对象时才会生效
+            function foo ({x, y = 5}){
+                console.log(x, y);
+            }
+            foo({}); // undefined, 5
+            foo({x: 1}); // 1, 5
+            foo({x: 1, y: 2}); //1, 2
+            foo(); //错误，参数不是对象
+
+            // 对象解构赋值
+            // 函数参数的默认值是空对象，但是设置了对象的结构赋值的默认值
+            function m1 ({x = 0, y = 0} = {}) {
+                return [x, y];
+            }
+            // 函数参数的默认值是一个有具体对象的默认值，但是没有设置对象解构赋值的默认值
+            function m2 ({x, y} = {x: 0, y: 0}) {
+                return [x, y];
+            }
+
+            function f(x = 1, y) {
+                return [x, y];
+            }
+            f(); // [1, undefined]
+            f(2); // [2, undefined]
+            f( , 1); // 报错,不能省略不是尾参数的参数
+            f(undefined, 1); // [1, 1]
+
+            // ES6的rest参数（形式为“...变量名”），用于获取函数的多余参数，可以替代arguments对象
+            function add (...values) {
+                let sum = 0;
+                for (var val of values) {
+                    sum += val;
+                }
+                return sum;
+            }
+            add(2, 5, 3) // 10
+
+            // 扩展运算符是三个点，好比rest参数的逆运算，将一个数组转化为用逗号分隔的参数序列
+            function add2(x, y) {
+                return x = y;
+            }
+            add2(...[2, 3]); // 5
+            Math.max.apply(null, [3, 7,1]); // ES5
+            Math.max(...[3, 7, 1]); // ES6
+            Math.max(3, 7, 1);
+
+            // 数组合并
+            [1, 2].concat([3, 4]); // ES5
+            [1, 2, ...[3, 4]] // ES6
+
+
+            // 箭头函数
+            var reuslt1 = [2, 4, 1, 6].sort(function (a, b) {
+                return a - b;
+            }); 
+            var result2 = [2, 4, 1, 6].sort((a, b) => a - b);
+
+            
+        </script>
+    </body>
+</html>

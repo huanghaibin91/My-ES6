@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>set and map</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <script>
+            // set结构不会添加重复的值
+            // set函数可以接受一个数组（或类似数组的对象）做为参数，用来初始化
+
+            // 可以用set来数组去重
+            [...new Set(array)]
+
+            function dedupe (Array) {
+                return Array.from(new Set(array));
+            }
+
+            // set常用方法
+            // add(value),添加某个值，返回Set结构本身
+            // delete(value)，删除某个值，返回一个布尔值
+            // has(value)，返回一个布尔值，表示是否为set成员
+            // clear(),清除所有成员，没有返回值
+
+            // set结构遍历方法
+            // keys()，返回键名的遍历值
+            // values()，返回键值的遍历值
+            // entries()，返回键值对的遍历值
+            // forEach(),使用回调函数遍历每个成员
+
+            // WeakSet, 弱set, WeakSet的成员只能是对象，且WeakSet的对象都是弱引用
+            // WeakSet没有size属性，没有办法遍历它的成员，它也没有forEach()，其他遍历都有
+
+            // map结构，键值对的集合，但是传统上只能用字符串当做键，map可以用各种类型的值（包括对象）都可以当做键
+            const m = new Map();
+            const o = {p: 'hello world'};
+            m.set(o, 'content');
+            m.get(o); // 'content
+            m.has(o); // ture
+            m.delete(o); // true
+            m.has(o); // false
+
+            // map也可以接受一个护士朱作为参数，该数组的成员是一个个表示键值对的数组
+            function strMapToObj (strMap) {
+                let obj = Object.create(null);
+                for (let [key, value] of m) {
+                    obj[key] = value; // 将map转化为对象
+                }
+                return obj;
+            }
+
+            function objToStrMao (obj){
+                let strMap = new Map();
+                for (let key of Object.keys(obj)) {
+                    strMap.set(k, obj[k]); // 将对象转化为map
+                }
+                return strMap;
+            }
+
+            // WeakMap，只接受对象作为键名，没有遍历操作，也没有size，也不支持clear()，只有get(),set(),has(),delete()
+            
+        </script>
+    </body>
+</html>
