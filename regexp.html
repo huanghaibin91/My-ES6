@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>RegExp</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-    <body>
-        <script>
-            // 字符串的正则方法
-            // match()
-            // replace()
-            // search()
-            // split()
 
-            // u修饰符，可以匹配32位字符
-            // y修饰符，作用跟g差不多是全局匹配，后一次匹配必须从上一次匹配成功的下一个位置开始
-            
-        </script>
-    </body>
+<head>
+    <title>RegExp</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <script>
+        // 字符串的正则方法
+        // match()
+        // replace()
+        // search()
+        // split()
+
+        // u修饰符，可以匹配32位字符
+        // y修饰符，作用跟g差不多是全局匹配，后一次匹配必须从上一次匹配成功的下一个位置开始
+
+        // ES5的source属性
+        // 返回正则表达式的正文
+        /abc/ig.source
+        // "abc"
+
+        // ES6的flags属性
+        // 返回正则表达式的修饰符
+        /abc / ig.flags
+        // 'gi'
+
+        // 正则表达式中，点（ . ）是一个特殊字符，代表任意的单个字符，但是行终止符（line terminator character）除外。以下四个字符属于”行终止符“
+        // U+000A 换行符（ \n ）
+        // U+000D 回车符（ \r ）
+        // U+2028 行分隔符（line separator）
+        // U+2029 段分隔符（paragraph separator）
+        /foo.bar/.test('foo\nbar') // false
+
+
+    </script>
+</body>
+
 </html>

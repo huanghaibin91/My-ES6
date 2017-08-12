@@ -11,27 +11,30 @@
                 const b = 2; // not defined
                 var c = 3; // 3
             }
+            // console.log(a); // 报错
+            // console.log(b);  // 报错
+            console.log(c);
 
             for (var i = 0; i < 10; i++) {}
             console.log(i); // 10 用var声明的变量i泄露到全局，当条件不满足时i为10
             for (let j = 0; j < 10; j++) {}
-            // console.log(j); // not defined
+            // console.log(j); // not defined，报错
 
-            var a = [];
+            var a2 = [];
             for (var i = 0; i < 10; i++) {
-                a[i] = function () {
+                a2[i] = function () {
                     console.log(i);
                 };
             }
-            a[5](); // 不论a[i]()输出都是i，因为i是var声明的，在全局范围都有效
+            a2[5](); // 不论a[i]()输出都是i，因为i是var声明的，在全局范围都有效
 
-            var a = [];
+            var a3 = [];
             for (let i = 0; i < 10; i++) {
-                a[i] = function () {
+                a3[i] = function () {
                     console.log(i);
                 };
             }
-            a[5](); // 5，使用let声明，变量仅在块级作用域中有效
+            a3[5](); // 5，使用let声明，变量仅在块级作用域中有效
 
             for (let i = 0; i < 3; i++) { // 两个i独立, 父作用域
                 let i = 'a'; // 子作用域
@@ -43,10 +46,10 @@
             // console.log(bar); // 报错，不会声明提升
             let bar = 'bar';
 
-            // 如果区块中存在let和const命令，这个区域对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错，这在语法上，称为“暂时性死区”
+            // 如果区块中存在let和const命令，这个区域对这些命令声明的变量，从一开始就形成了封闭作用域，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响。凡是在声明之前就使用这些变量，就会报错，这在语法上，称为“暂时性死区”
             var tmp = 'a';
             if (true) {
-                tmp = 'b'; // 赋值操作报错，暂时性死区
+                tmp = 'b'; // 赋值操作报错，暂时性死区，报错
                 let tmp;
             }
             if (true) {
@@ -57,16 +60,16 @@
                 tem = 'b';
                 console.log(tem); // b
             }
-            function bar (x = y, y = 2) { // 在y声明之前将y赋值给x
+            function bar2 (x = y, y = 2) { // 在y声明之前将y赋值给x
                 return [x, y];
             }
-            bar(); // 报错，在y声明之前使用
+            bar2(); // 报错，在y声明之前使用
 
             // let不允许在相同作用域中重复声明
             function func (arg) {
                 // let arg; // 报错，重复声明参数
             }
-            function () {
+            function func2() {
                 let a = 1;
                 // var a = 2; // 报错，重复声明
             }
@@ -89,12 +92,16 @@
             }
 
             // const声明一个只读的常量。一旦声明，常量的值就不能改变
-            const a; // 报错，常量不能改变，所以声明时就必须赋值
+            // const a; // 报错，常量不能改变，所以声明时就必须赋值
             const a = 'a';
             // const保证的并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据等同于常量，但是复合类型如对象数组，对象是可变的，对象的地址是不变的
-            const foo = {};
-            foo.prop = 123; // 成功
-            foo = {} // 报错，foo的地址不可改变，不能把foo指向另一个对象
+            const foo2 = {};
+            foo2.prop = 123; // 成功
+            foo2 = {} // 报错，foo的地址不可改变，不能把foo指向另一个对象
+
+            // ES5 只有两种声明变量的方法： var 命令和 function 命令。 ES6除了添加 let 和 const 命令，后面章节还会提到，另外两种声明变量的方法： import 命令和 class 命令。所以，ES6 一共有6种声明变量的方法
+
+            
         </script>
     </body>
 </html>

@@ -27,6 +27,12 @@
 
             // Object.is(),同值相等，比较两个值是否严格相等
             // Object.assign(target, source1, source2),用于对象的合并，将source的所有可枚举属性，复制到目标对象，遇到同名就替换点
+            var target = { a: 1 };
+            var source1 = { b: 2 };
+            var source2 = { c: 3 };
+            Object.assign(target, source1, source2);
+            target // {a:1, b:2, c:3}
+            // Object.assign 方法实行的是浅拷贝，而不是深拷贝。也就是说，如果源对象某个属性的值是对象，那么目标对象拷贝得到的是这个对象的引用Object.assign() ，会忽略 enumerable 为 false 的属性，只拷贝对象自身的可枚举的属性
 
             // 对象遍历，Object.keys(), Object.values(), Object.entries()
         </script>
