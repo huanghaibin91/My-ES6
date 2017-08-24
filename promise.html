@@ -1,71 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>promise</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-    <body>
-        <script>
-            // promise是异步编程的一种解决方案，简单说就是一个容器，里边保存着某个未来才会结束的事件（通常是一个异步操作）的结果
-            // promise的特点：1.对象的状态不受外界影响，promise有三个状态：Pending（进行中）、Resolved（已完成）和Rejected（已失败）
-            // 2.一旦状态改变，就不会再变，任何时候都可以得到这个结果，只有两个变化pending到resolved，pending到rejected
 
-            // 创建promise
-            var promise = new Promise(function (resolve, reject) {
-                // some code
-                if (true/* 异步操作成功 */) {
-                    resolve(value);
-                } else {
-                    reject(error);
-                }
-            })
-            // promise实例生成以后，可以用this方法分别指定resolved和rejected状态的回调函数
-            promise.then(function (value) {
-                // success
-            }, function (error) {
-                // failure
-            });
+<head>
+    <title>promise</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+</head>
 
-            let promise = new Promise(function (resolve, reject) {
-                console.log('promise');
-                resolve();
-            });
-            promise.then(function () {
-                console.log('resolved');
-            });
-            console.log('hi');
-            // 输出依次是promise、hi、resolved，promise新建后立即执行，then方法指定回调函数，将在当前脚本所有同步任务执行完成才会执行，所以
-            // 最后输出
+<body>
+    <script>
+        // promise是异步编程的一种解决方案，简单说就是一个容器，里边保存着某个未来才会结束的事件（通常是一个异步操作）的结果
+        // promise的特点：1.对象的状态不受外界影响，promise有三个状态：Pending（进行中）、Fulfilled（已完成）
+        // 和Rejected（已失败）
+        // 2.一旦状态改变，就不会再变，任何时候都可以得到这个结果，只有两个变化pending到Fulfilled，pending到rejected
 
-            // 异步加载图片
-            function loadImageAsync (url) {
-                return new Promise(function(resolve, reject) {
-                    var image = new Image();
+        // Promise也有一些缺点。首先，无法取消Promise，一旦新建它就会立即执行，无法中途取消。其次，如果不设置回调函数，
+        // Promise内部抛出的错误，不会反应到外部。第三，当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是
+        // 即将完成）
 
-                    image.onload = function () {
-                        resolve(image);
-                    };
-
-                    image.onerror = function () {
-                        reject(new Error('Could not load image at' + url));
-                    }
-
-                    image.src = url;
-                });
+        // 创建promise
+        var promise = new Promise(function (resolve, reject) {
+            // some code
+            if (true /* 异步操作成功 */ ) {
+                resolve(value);
+            } else {
+                reject(error);
             }
-            // then,catch,一般不要再then方法定义rejected状态的回调函数（即then的第二个参数），总是使用catch方法
+        })
+        // promise实例生成以后，可以用this方法分别指定resolved和rejected状态的回调函数
+        promise.then(function (value) {
+            // success
+        }, function (error) {
+            // failure
+        });
 
-            // promise.all()方法用于多个promise实例，都状态完成才完成，有一个失败即失败
+        // Promise 新建后就会立即执行
+        let promise = new Promise(function (resolve, reject) {
+            console.log('promise');
+            resolve();
+        });
+        promise.then(function () {
+            console.log('resolved');
+        });
+        console.log('hi');
+        // 输出依次是promise、hi、resolved，promise新建后立即执行，then方法指定回调函数，将在当前脚本所有
+        // 同步任务执行完成才会执行，所以
+        // 最后输出
 
-            // promise.race(),多个promise实例，有一个率先改变状态，就返回
+        // 异步加载图片
+        function loadImageAsync(url) {
+            return new Promise(function (resolve, reject) {
+                var image = new Image();
 
-            // promise.resolve(),将对象转化为promise对象
+                image.onload = function () {
+                    resolve(image);
+                };
+                image.onerror = function () {
+                    reject(new Error('Could not load image at' + url));
+                }
+                image.src = url;
+            });
+        }
+        // promise实现Ajax
+        var getJSON = function (url) {
+            var promise = new Promise(function (resolve, reject) {
+                var client = new XMLHttpRequest();
+                client.open("GET", url);
+                client.onreadystatechange = handler;
+                client.responseType = "json";
+                client.setRequestHeader("Accept", "application/json");
+                client.send();
+                function handler() {
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+                    if (this.status === 200) {
+                        resolve(this.response);
+                    } else {
+                        reject(new Error(this.statusText));
+                    }
+                };
+            });
+            return promise;
+        };
+        getJSON("/posts.json").then(function (json) {
+            console.log('Contents: ' + json);
+        }, function (error) {
+            console.error('出错了', error);
+        });
+        // 如果调用resolve函数和reject函数时带有参数，那么它们的参数会被传递给回调函数。
+        // reject函数的参数通常是Error对象的实例，表示抛出的错误；resolve函数的参数除了正常的值以外，还可能是另一个 Promise 实例
 
-            // promise.reject(),返回一个promise对象，该实例状态为rejected
+        // Promise 实例具有then方法，也就是说，then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数
+        // then方法的第一个参数是Resolved状态的回调函数，第二个参数（可选）是Rejected状态的回调函数
+        // then,catch,一般不要再then方法定义rejected状态的回调函数（即then的第二个参数），总是使用catch方法
 
-            
-        </script>
-    </body>
+        // promise.all()方法用于多个promise实例，都状态完成才完成，有一个失败即失败
+
+        // promise.race(),多个promise实例，有一个率先改变状态，就返回
+
+        // promise.resolve(),将对象转化为promise对象
+
+        // promise.reject(),返回一个promise对象，该实例状态为rejected
+    </script>
+</body>
+
 </html>
