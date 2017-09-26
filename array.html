@@ -23,7 +23,7 @@
         //ES6
         var arr2 = Array.from(arrayLick);
 
-        // 拓展运算符（...）也可以将某些数据结构转为数据
+        // 拓展运算符（...）也可以将某些数据结构转为数组
         // 扩展运算符背后调用的是遍历器接口（ Symbol.iterator ），如果一个对象没有部署这个接口，就无法转换。 Array.from 方法则是还支持类似数组的对象。所谓类似数组的对象，本质特征只有一点，即必须有 length 属性。因此，任何有 length 属性的对象，都可以通过 Array.from 方法转为数组，而此时扩展运算符就无法转换
         // arguments对象
         function foo() {
@@ -31,7 +31,7 @@
         }
 
         // 兼容写法
-        const toArray = (() => Array.from ? Array.from : obj => [].slice.call(obj);
+        const toArray = (() => Array.from ? Array.from : obj => [].slice.call(obj));
 
         // Array.from()还可以接受第二个参数，作用类似于map
         // 下面两个作用一样
