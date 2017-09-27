@@ -8,7 +8,8 @@
     </head>
     <body>
         <script>
-            // JavaScript内部，字符以utf-16格式储存，每个字符固定为2个字节。对于需要4个字节储存的字符（字符Unicode码点大于0xFFFF的字符）
+            // JavaScript内部，字符以utf-16格式储存，每个字符固定为2个字节。对于需要4个字节储存的字符（字符Unicode码点大于
+            // 0xFFFF的字符）
             // JavaScript会认为它们是两个字符
             function is32Bit (c) { // codePointAt测试一个字符由两个字节还是四个字节组成
                 return c.codePointAt(0) > 0xFFFF;
@@ -41,7 +42,8 @@
             let b = `${a} world`; // 'hello world'
             let c = `2 + 3 = ${2 + 3}`; // 5,${}中可以放入任意JavaScript表达式，也可以调用函数
 
-            // String.raw()，用来充当模板字符串的处理函数，返回一个斜杠都被转义（即斜杠前面再加一个斜杠）的字符串，对应于替换变量后的模板字符串
+            // String.raw()，用来充当模板字符串的处理函数，返回一个斜杠都被转义（即斜杠前面再加一个斜杠）的字符串，
+            // 对应于替换变量后的模板字符串
         </script>
     </body>
 </html>
