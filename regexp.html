@@ -29,12 +29,15 @@
         /abc / ig.flags
         // 'gi'
 
-        // 正则表达式中，点（ . ）是一个特殊字符，代表任意的单个字符，但是行终止符（line terminator character）除外。以下四个字符属于”行终止符“
+        // 正则表达式中，点（ . ）是一个特殊字符，代表任意的单个字符，但是行终止符（line terminator character）除外。
+        // 以下四个字符属于”行终止符“
         // U+000A 换行符（ \n ）
         // U+000D 回车符（ \r ）
         // U+2028 行分隔符（line separator）
         // U+2029 段分隔符（paragraph separator）
         /foo.bar/.test('foo\nbar') // false
+
+        
 
 
     </script>
