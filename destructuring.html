@@ -16,7 +16,7 @@
         ]] = [1, [
             [2], 3
         ]]; // foo = 1,bar = 2,baz = 3
-        let [, , third] = ['foo', 'bar', 'baz']; // third = 'baz'
+        let [, , third] = ['foo', 'bar', 'baz']; // third = 'baz'，只获取第三项的值，前面就用逗号隔开
         let [head, ...tail] = [1, 2, 3, 4] // head = 1,tail = [2, 3, 4]
         let [x, y, ...z] = ['a'] // x = 'a', y = undefined, z = []
         // 解构有两种，完全解构和不完全解构，解构赋值左右两边都是可遍历的结构
@@ -24,7 +24,8 @@
         let [x, y = 'b'] = ['a'] // x = 'a', y = 'b'
         let [x, y = 'b'] = ['a', undefined] // x = 'a', y = 'b'
         let [x = 1] = [null] // x = null, 右边为undefined是默认值生效，但如果为null，默认值不起作用，ES6 内部使用严格相等运算符（ === ），判断一个位置是否有值。所以，如果一个数组成员不严格等于 undefined ，默认值是不会生效的
-
+        // 对象与数组解构都能在属性或项未定义时为其提供默认值；在赋值表达式右侧的值为 null或 undefined 时，两种模式都会抛出错误
+        let [x, y ] = undefined; // error
         // 如果默认值是一个表达式，那么表达式是惰性求值的，只有在用到的时候，才会求值
 
         // 对象的解构赋值跟数组不一样，对象可以不按次序，只要变量与属性同名，就能取得正确的值
@@ -58,7 +59,7 @@
             foo
         } = {
             foo: 1
-        }); // foo = 1, let命令下面的圆括号是必须的，否则会报错，因为不加括号{}会被浏览器理解为一个代码块
+        }); // foo = 1, let命令下面的圆括号是必须的，否则会报错，因为不加括号的{}会被浏览器理解为一个代码块
 
         let {
             foo: foo,
@@ -89,28 +90,36 @@
         // 解构赋值时，等号右边是数值和布尔值，就会先转化为对象，由于undefined和null无法转化为对象，所以对他们进行解构赋值，都会报错
 
         // 函数的参数也可以使用解构赋值
+
+        // 函数声明时，第三个参数是对象并进行解构赋值
+        function setCookie(name, value, { secure, path, domain, expires }) {
+            // 设置 cookie 的代码
+        }
+        // 上面代码相当于：
+        function setCookie(name, value, options) {
+            let { secure, path, domain, expires } = options; // 如果在调用时没有传第三个值的话，相当于options是undefined，
+            // 此时会报错
+            // 设置 cookie 的代码
+        }
+        // 在默认情况下，调用函数时未给第三个参数传值时，解构传值会抛出错误
+        // 解决方法，给第三个解构赋值的参数传递一个默认值：
+        function setCookie(name, value, { secure, path, domain, expires } = {}) { // 解构参数有一个默认值为一个空对象，
+        // 这样不传入第三个参数也不会报错
+            // ...
+        }
+
         function add([x, y]) {
             return x + y
         }
         add([1, 2]) // 3
-        [
-            [1, 2],
-            [3, 4]
-        ].map(([a, b]) => a + b) // [3, 7]
-        function move({
-            x = 0,
-            y = 0
-        } = {}) { // 为变量x和y指定默认值
+
+        [[1, 2], [3, 4]].map(([a, b]) => a + b) // [3, 7]
+
+        function move({x = 0, y = 0} = {}) { // 为变量x和y指定默认值
             return [x, y];
         }
 
-        function move({
-            x,
-            y
-        } = {
-            x: 0,
-            y: 0
-        }) { // 为函数move的参数指定默认值
+        function move({x, y} = {x: 0,y: 0}) { // 为函数move的参数指定默认值
             return [x, y]
         }
 
@@ -119,6 +128,10 @@
         let x = 1;
         let y = 2;
         [x, y] = [y, x] // x = 2, y = 1
+
+        // 克隆数组
+        let colors = [ "red", "green", "blue" ];
+        let [ ...clonedColors ] = colors; // 新数组clonedColors
 
         //  从函数返回多个值,函数只能返回一个值，如果要返回多个值，只能将它们放在数组或对象里返回，有了解构赋值，取出这些值很方便
         function example() {
