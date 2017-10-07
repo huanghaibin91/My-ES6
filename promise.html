@@ -34,6 +34,13 @@
         }, function (error) {
             // failure
         });
+        // 只监听失败，完成的回调设置为null或者使用catch
+        promise.then(null, function (error) {
+            // failure
+        });
+        promise.cathc(function (error) {
+            // failure
+        });
 
         // Promise 新建后就会立即执行
         let promise = new Promise(function (resolve, reject) {
@@ -71,6 +78,7 @@
                 client.responseType = "json";
                 client.setRequestHeader("Accept", "application/json");
                 client.send();
+
                 function handler() {
                     if (this.readyState !== 4) {
                         return;
@@ -96,13 +104,67 @@
         // then方法的第一个参数是Resolved状态的回调函数，第二个参数（可选）是Rejected状态的回调函数
         // then,catch,一般不要再then方法定义rejected状态的回调函数（即then的第二个参数），总是使用catch方法
 
-        // promise.all()方法用于多个promise实例，都状态完成才完成，有一个失败即失败
+        // promise.all()方法用于多个promise实例，都状态完成才完成，有一个失败即失败，Promise.all() 方法接收单个可迭代对象
+        // （ 如数组） 作为参数，并返回一个 Promise
+        let p1 = new Promise(function (resolve, reject) {
+            resolve(42);
+        });
+        let p2 = new Promise(function (resolve, reject) {
+            resolve(43);
+        });
+        let p3 = new Promise(function (resolve, reject) {
+            resolve(44);
+        });
+        let p4 = Promise.all([p1, p2, p3]); // 将三个promise对象传递到参数数组进去
+        p4.then(function (value) { // 状态完成传递的参数也会是一个数组
+            console.log(Array.isArray(value)); // true
+            console.log(value[0]); // 42
+            console.log(value[1]); // 43
+            console.log(value[2]); // 44
+        });
+        // 若传递给 Promise.all() 的任意 Promise 被拒绝了，那么方法所返回的 Promise 就会立刻被拒绝，而不必等待其他的 
+        // Promise 结束
 
         // promise.race(),多个promise实例，有一个率先改变状态，就返回
+        let p1 = Promise.resolve(42);
+        let p2 = new Promise(function (resolve, reject) {
+            resolve(43);
+        });
+        let p3 = new Promise(function (resolve, reject) {
+            resolve(44);
+        });
+        let p4 = Promise.race([p1, p2, p3]);
+        p4.then(function (value) {
+            console.log(value); // 42
+        });
 
-        // promise.resolve(),将对象转化为promise对象
+        // promise.resolve(),将对象转化为promise对象,Promise.resolve() 方法接受单个参数并会返回一个处于完成态的 Promise
+        let promise = Promise.resolve(42);
+        promise.then(function (value) {
+            console.log(value); // 42
+        });
 
         // promise.reject(),返回一个promise对象，该实例状态为rejected
+        let promise = Promise.reject(42);
+        promise.catch(function (value) {
+            console.log(value); // 42
+        });
+
+        // 多个promise链式调用
+        let p1 = new Promise(function (resolve, reject) {
+            resolve(42);
+        });
+        let p2 = new Promise(function (resolve, reject) {
+            resolve(43);
+        });
+        p1.then(function (value) {
+            // 第一个完成处理函数
+            console.log(value); // 42
+            return p2;
+        }).then(function (value) {
+            // 第二个完成处理函数
+            console.log(value); // 43
+        });
     </script>
 </body>
 

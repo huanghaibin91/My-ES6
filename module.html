@@ -14,14 +14,22 @@
     再执行模块脚本，等同于打开了<script>标签的defer属性 -->
     <!-- <script type="module" src="foo.js"></script> -->
     <script>
+        // 模块特点：
+        // 1. 模块代码自动运行在严格模式下，并且没有任何办法跳出严格模式；
+        // 2. 在模块的顶级作用域创建的变量，不会被自动添加到共享的全局作用域，它们只会在模块顶级作用域的内部存在；
+        // 3. 模块顶级作用域的 this 值为 undefined ；
+        // 4. 模块不允许在代码中使用 HTML 风格的注释（ 这是 JS 来自于早期浏览器的历史遗留特性）；
+        // 5. 对于需要让模块外部代码访问的内容，模块必须导出它们；
+        // 6. 允许模块从其他模块导入绑定
+
         // ES6 模块不是对象，而是通过export命令显式指定输出的代码，再通过import命令输入
 
-        // import { stat, exists, readFile } from 'fs';
+        // import { stat, exists, readFile } from 'fs'; // 引入非默认模块需要用大括号包裹起来
 
         // 模块功能主要由两个命令构成：export和import。export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能
         // export命令可以出现在模块的任何位置，只要处于模块顶层就可以。如果处于块级作用域内，就会报错，下一节的import命令也是如此
         // 一个模块就是一个独立的文件。该文件内部的所有变量，外部无法获取。如果你希望外部能够读取模块内部的某个变量，就必须使用export关键字输出该变量
-
+        // export放置在任意变量、函数或类声明之前，从模块中将它们公开出去
         // 写法一
         export var m = 1;
         // 写法二
@@ -40,8 +48,9 @@
         // import { lastName as surname } from './profile';
         // import * as circle from './circle'; // 整体加载的写法
 
-        // export default命令，为模块指定默认输出。xport default命令用于指定模块的默认输出。显然，
-        // 一个模块只能有一个默认输出，因此export default命令只能使用一次。所以，import命令后面才不用加大括号，因为只可能对应一个方法
+        // export default命令，为模块指定默认输出。export default命令用于指定模块的默认输出。显然，
+        // 一个模块只能有一个默认输出，因此export default命令只能使用一次。所以，import命令后面才不用加大括号，因为只可能
+        // 对应一个方法，export default不需要名称，因为它就代表这个模板本身
         // export-default.js
         export default function () {
             console.log('foo');
@@ -51,20 +60,39 @@
         import customName from './export-default';
         customName(); // foo
 
+        // export default与export同时存在
+        // 定义模块
+        export let color = "red";
+        export default function (num1, num2) {
+            return num1 + num2;
+        }
+        // 引入模块
+        // 语句中默认名称必须位于非默认名称之前，
+        import sum, { color } from "./example.js";
+        console.log(sum(1, 2)); // 3
+        console.log(color); // "red"
+
         // 先输入后输出同一个模块，import语句可以与export语句写在一起
-        export {foo,bar} from 'my_module';
+        export {
+            foo,
+            bar
+        }
+        from 'my_module';
         // 等同于
-        import {foo,bar} from 'my_module';
-        export {foo,bar};
+        import {
+            foo,
+            bar
+        } from 'my_module';
+        export {
+            foo,
+            bar
+        };
 
         // ES6 模块与 CommonJS 模块完全不同
         // CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
         // CommonJS 模块是运行时加载，ES6 模块是编译时输出接口
 
         // 一个模块脚本只要有一行import或export语句，Node 就会认为该脚本为 ES6 模块，否则就为 CommonJS 模块
-        
-
-
     </script>
 </body>
 

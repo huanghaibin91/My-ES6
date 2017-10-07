@@ -1,40 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>object</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-    <body>
-        <script>
-            // 对象添加属性简写
-            var foo = 'bar';
-            var baz = {foo};
-            baz // {foo: "bar"},等同于var baz = {foo: foo}
 
-            // 方法简写
-            var o = {
-                method () {
-                    return 'hello';
+<head>
+    <title>object</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <script>
+        // 对象添加属性简写
+        var foo = 'bar';
+        var baz = {
+            foo
+        };
+        baz // {foo: "bar"},等同于var baz = {foo: foo}
+        function createPerson(name, age) {
+            return {
+                name, // 当对象字面量中的属性只有名称时， JS 引擎会在周边作用域查找同名变量。若找到，该变量的值将会被赋给
+                // 对象字面量的同名属性
+                age
+            };
+        }
+
+        // 方法简写
+        var o = {
+            method() {
+                return 'hello';
+            }
+        };
+        var o = {
+            method: function () {
+                return 'hello';
+            }
+        };
+
+        // 可计算属性名
+        var lastName = "last name";
+        var suffix = " name";
+        var person = {
+            "first name": "Nicholas",
+            [lastName]: "Zakas",
+            ["one" + suffix]: "Nic"
+        };
+        console.log(person["first name"]); // "Nicholas"
+        console.log(person[lastName]); // "Zakas"
+        console.log(person["one name"]); // "Nic"
+
+        // Object.is(),同值相等，比较两个值是否严格相等
+
+        // Object.assign(target, source1, source2),用于对象的合并，将source的所有可枚举属性，复制到目标对象，遇到同名
+        // 就替换掉
+        var target = {
+            a: 1
+        };
+        var source1 = {
+            b: 2
+        };
+        var source2 = {
+            c: 3
+        };
+        Object.assign(target, source1, source2);
+        target // {a:1, b:2, c:3}
+        // Object.assign 方法实行的是浅拷贝，而不是深拷贝。也就是说，如果源对象某个属性的值是对象，那么目标对象拷贝
+        // 得到的是这个对象的引用Object.assign() ，会忽略 enumerable 为 false 的属性，只拷贝对象自身的可枚举的属性
+
+        // Object.assign() 不能将源对象的访问器属性复制到接收对象中，由于它使用了赋值运算符，源对象的访问器属性就会转变
+        // 成接收对象的数据属性
+        var receiver = {},
+            supplier = {
+                get name() {
+                    return "file.js"
                 }
             };
-            var o = {
-                method: function () {
-                    return 'hello';
-                }
-            };
+        Object.assign(receiver, supplier);
+        var descriptor = Object.getOwnPropertyDescriptor(receiver, "name");
+        console.log(descriptor.value); // "file.js"
+        console.log(descriptor.get); // undefined
 
-            // Object.is(),同值相等，比较两个值是否严格相等
-            // Object.assign(target, source1, source2),用于对象的合并，将source的所有可枚举属性，复制到目标对象，遇到同名就替换点
-            var target = { a: 1 };
-            var source1 = { b: 2 };
-            var source2 = { c: 3 };
-            Object.assign(target, source1, source2);
-            target // {a:1, b:2, c:3}
-            // Object.assign 方法实行的是浅拷贝，而不是深拷贝。也就是说，如果源对象某个属性的值是对象，那么目标对象拷贝得到的是这个对象的引用Object.assign() ，会忽略 enumerable 为 false 的属性，只拷贝对象自身的可枚举的属性
+        // 对象遍历，Object.keys(), Object.values(), Object.entries()
+    </script>
+</body>
 
-            // 对象遍历，Object.keys(), Object.values(), Object.entries()
-        </script>
-    </body>
 </html>
