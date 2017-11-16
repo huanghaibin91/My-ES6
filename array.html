@@ -32,6 +32,11 @@
             var args = [...arguments];
         }
 
+        // ES5 的写法
+        Math.max.apply(null, [14, 3, 77]);
+        // ES6 的写法
+        Math.max(...[14, 3, 77]);
+
         // 兼容写法
         const toArray = (() => Array.from ? Array.from : obj => [].slice.call(obj));
 
@@ -42,7 +47,11 @@
 
         // Array.of(),用于将一组值转化为数组,Array 方法没有参数、一个参数、三个参数时，返回结果都不一样。
         // 只有当参数个数不少于2个时， Array() 才会返回由参数组成的新数组。参数个数只有一个时，实际上是指定数组的长度
-        var arr3 = Array.of(1, 2, 3);
+        Array.of(1, 2, 3); // [1, 2, 3]
+        Array.of(1) // [1]
+        Array(3) // [, , ,]
+        Array.of() // []
+        Array.of(undefined) // [undefined]
 
         // copeWithin(target, start, end),从start开始到end结束不包含end复制数组内容，然后替换target目标位置之后的数组元素
 

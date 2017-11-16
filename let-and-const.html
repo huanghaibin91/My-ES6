@@ -104,6 +104,12 @@
             foo2.prop = 123; // 成功
             foo2 = {} // 报错，foo的地址不可改变，不能把foo指向另一个对象
 
+            // let和const声明的全局变量不会成为顶层对象的属性
+            var a = 1;
+            let b = 2;
+            window.a // 1
+            window.b // undefined
+
             // ES5 只有两种声明变量的方法： var 命令和 function 命令。 ES6除了添加 let 和 const 命令，后面章节还会提到，另外
             // 两种声明变量的方法： import 命令和 class 命令。所以，ES6 一共有6种声明变量的方法
 
