@@ -62,7 +62,7 @@
         // 这两个方法都可以发现 NaN ，弥补了数组的 IndexOf 方法的不足，indexOf 方法无法识别数组的 NaN 成员，但是 findIndex
         // 方法可以借助 Object.is 方法做到
 
-        // fill(),用给定值，填充一个数组，三个参数，给定值，填充的起始位置和结束位置
+        // fill(value, start, end),用给定值，填充一个数组，三个参数，给定值，填充的起始位置和结束位置
 
         // 数组实例entries(),keys()he values(),用for...of循环进行遍历
         for (let index of ['a', 'b', 'c'].keys()) {
@@ -75,9 +75,15 @@
             console.log([index, ele]);
         }
 
-        // includes(),检测数组是否包含某个值
+        // includes(),检测数组是否包含某个值，第二个参数表示搜索的起始位置
 
         // ES6则是明确将空位转为 undefined
+
+        // ES5 对空位的处理，大多数情况下会忽略空位。
+        // forEach(), filter(), every() 和some()都会跳过空位。
+        // map()会跳过空位，但会保留这个值
+        // join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串
+
 
     </script>
 </body>

@@ -24,7 +24,7 @@
         class Point2 {
             // 自有属性（Own properties ） ：该属性出现在实例上而不是原型上，只能在类的构造器constructor或方法内部进行创建
             // 应在构造器函数内创建所有可能出现的自有属性，这样在类中声明变量就会被限制在单一位置（ 有助于代码检查）
-            constructor(x, y) { // constructor方法，这就是构造方法
+            constructor(x, y) { // constructor方法，这就是构造方法，也是绑定到原型上
                 this.x = x;
                 this.y = y;
             }
@@ -95,13 +95,14 @@
 
         // constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。一个类必须有constructor方法，
         // 如果没有显式定义，一个空的constructor方法会被默认添加
+        // constructor方法默认返回实例对象（即this），完全可以指定返回另外一个对
         class Point3 {}
         // 等同于
         class Point3 {
             constructor() {} // onstructor方法默认返回实例对象（即this），完全可以指定返回另外一个对象，该方法为
             // 类添加实例属性和方法
         }
-
+        
         // 类与函数相似之处在于都有两种形式：声明与表达式
         // 与函数一样，类也可以使用表达式的形式定义
         const MyClass = class Me { // 也可以去掉Me
@@ -112,7 +113,8 @@
         // 采用 Class 表达式，可以写出立即执行的 Class，此模式允许你使用类语法来创建单例，从而不留下任何可被探查的类引用
         let person = new class {
             constructor(name) {
-                this.name = name;
+                this.name = name; // 实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上
+                // （即定义在class上）
             }
             sayName() {
                 console.log(this.name);

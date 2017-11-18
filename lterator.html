@@ -22,7 +22,9 @@
         // （3）第二次调用指针对象的next方法，指针就指向数据结构的第二个成员
         // （4）不断调用指针对象的next方法，直到它指向数据结构的结束位置
 
-        // ES6 规定，默认的 Iterator 接口部署在数据结构的Symbol.iterator属性，或者说，一个数据结构只要具有Symbol.iterator属性，就可以认为是“可遍历的”
+        // ES6 规定，默认的 Iterator 接口部署在数据结构的Symbol.iterator属性，或者说，一个数据结构只要具有Symbol.iterator
+        // 属性，就可以认为是“可遍历的”，ymbol.iterator属性本身是一个函数，就是当前数据结构默认的遍历器生成函数。执行这个函数，
+        // 就会返回一个遍历器
         // 原生具备 Iterator 接口的数据结构如下，都可以使用for...of迭代遍历：
         // Array
         // Map
@@ -45,7 +47,8 @@
 
         let collection = {
             items: [],
-            * [Symbol.iterator]() { // Symbol.iterator方法（注意其名称之前也有星号）创建了生成器，为collection对象定义了一个默认的迭代器
+            * [Symbol.iterator]() { // Symbol.iterator方法（注意其名称之前也有星号）创建了生成器，为collection对象定义了
+                // 一个默认的迭代器
                 for (let item of this.items) {
                     yield item;
                 }
@@ -69,11 +72,23 @@
         // Promise.race()
 
         // for...of使用场景：
-        // ES6 提供for...of循环数组，允许遍历获得键值，数组的遍历器接口只返回具有数字索引的属性，可以与break、continue和return配合使用
-        // Set 结构遍历时，返回的是一个值，而 Map 结构遍历时，返回的是一个数组，该数组的两个成员分别为当前 Map 成员的键名和键值
+        // ES6 提供for...of循环数组，允许遍历获得键值，数组的遍历器接口只返回具有数字索引的属性，可以与break、continue和
+        // return配合使用
+        // Set 结构遍历时，返回的是一个值，而 Map 结构遍历时，返回的是一个数组，该数组的两个成员分别为当前 Map 成员的键名
+        // 和键值
         // 字符串for...of循环，会正确识别32位 UTF-16 字符
         // 普通的对象，for...of结构不能直接使用，会报错，必须部署了 Iterator 接口后才能使用
         // 在不可迭代对象、 null 或 undefined 上使用 for-of 语句，会抛出错误
+
+        // JavaScript 原有的for...in循环，只能获得对象的键名，不能直接获取键值。ES6 提供for...of循环，允许遍历获得键值
+        var arr = ['a', 'b', 'c', 'd'];
+        for (let a in arr) {
+            console.log(a); // 0 1 2 3
+        }
+        for (let a of arr) {
+            console.log(a); // a b c d
+        }
+        
     </script>
 </body>
 

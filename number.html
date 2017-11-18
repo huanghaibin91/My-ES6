@@ -36,9 +36,11 @@
             });
         })(this);
 
-        // Number.parseInt(), Number.parseFloat()，ES6将全局方法 parseInt() 和 parseFloat() ，移植到Number对象上面，行为完全保持不变
+        // Number.parseInt(), Number.parseFloat()，ES6将全局方法 parseInt() 和 parseFloat() ，移植到Number对象上面，
+        // 行为完全保持不变
 
-        // Number.isInteger() 用来判断一个值是否为整数。需要注意的是，在JavaScript内部，整数和浮点数是同样的储存方法，所以3和3.0被视为同一个值
+        // Number.isInteger() 用来判断一个值是否为整数。需要注意的是，在JavaScript内部，整数和浮点数是同样的储存方法，
+        // 所以3和3.0被视为同一个值
         // ES5可以通过下面的代码，部署 Number.isInteger()
         (function(global) {
             var floor = Math.floor,
@@ -53,7 +55,8 @@
             });
         })(this);
 
-        // ES6在Number对象上面，新增一个极小的常量 Number.EPSILON，引入一个这么小的量的目的，在于为浮点数计算，设置一个误差范围
+        // ES6在Number对象上面，新增一个极小的常量 Number.EPSILON，引入一个这么小的量的目的，在于为浮点数计算，设置一个误差
+        // 范围
         
         // Math.trunc方法用于去除一个数的小数部分，返回整数部分
         Math.trunc('123.456') // 123
@@ -70,6 +73,7 @@
         // 参数为0，返回0；
         // 参数为-0，返回-0;
         // 其他值，返回NaN
+        
         // Math.cbrt方法用于计算一个数的立方根
         // Math.imul方法返回两个数以32位带符号整数形式相乘的结果，返回的也是一个32位的带符号整数
         // Math.fround方法返回一个数的单精度浮点数形式

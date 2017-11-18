@@ -38,7 +38,7 @@
         promise.then(null, function (error) {
             // failure
         });
-        promise.cathc(function (error) {
+        promise.cacth(function (error) {
             // failure
         });
 
@@ -98,14 +98,24 @@
             console.error('出错了', error);
         });
         // 如果调用resolve函数和reject函数时带有参数，那么它们的参数会被传递给回调函数。
-        // reject函数的参数通常是Error对象的实例，表示抛出的错误；resolve函数的参数除了正常的值以外，还可能是另一个 Promise 实例
+        // reject函数的参数通常是Error对象的实例，表示抛出的错误；resolve函数的参数除了正常的值以外，还可能是另一个 Promise
+        //  实例
+        const p1 = new Promise(function (resolve, reject) {
+            // ...
+        });
+        const p2 = new Promise(function (resolve, reject) {
+            // ...
+            resolve(p1); // p2的resolve方法将p1作为参数，这时p1的状态就会传递给p2，也就是说，p1的状态决定了p2的状态
+        });
 
-        // Promise 实例具有then方法，也就是说，then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数
+        // Promise 实例具有then方法，也就是说，then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添
+        // 加状态改变时的回调函数
         // then方法的第一个参数是Resolved状态的回调函数，第二个参数（可选）是Rejected状态的回调函数
-        // then,catch,一般不要再then方法定义rejected状态的回调函数（即then的第二个参数），总是使用catch方法
+        // then,catch,一般不要在then方法定义rejected状态的回调函数（即then的第二个参数），总是使用catch方法
+        // catch方法返回的还是一个 Promise 对象，因此后面还可以接着调用then方法
 
         // promise.all()方法用于多个promise实例，都状态完成才完成，有一个失败即失败，Promise.all() 方法接收单个可迭代对象
-        // （ 如数组） 作为参数，并返回一个 Promise
+        // （ 如数组） 作为参数，并返回一个 Promise，传入的参数是一个promise数组
         let p1 = new Promise(function (resolve, reject) {
             resolve(42);
         });
@@ -124,6 +134,21 @@
         });
         // 若传递给 Promise.all() 的任意 Promise 被拒绝了，那么方法所返回的 Promise 就会立刻被拒绝，而不必等待其他的 
         // Promise 结束
+        const p1 = new Promise((resolve, reject) => {
+                resolve('hello'); // p1会resolved
+            })
+            .then(result => result)
+            .catch(e => e);
+        const p2 = new Promise((resolve, reject) => {
+                throw new Error('报错了'); // p2首先会rejected，但是p2有自己的catch方法，该方法返回的是一个新的 Promise 实例，
+                // p2指向的实际上是这个实例
+            })
+            .then(result => result)
+            .catch(e => e);
+        Promise.all([p1, p2])
+            .then(result => console.log(result))
+            .catch(e => console.log(e));
+        // ["hello", Error: 报错了]
 
         // promise.race(),多个promise实例，有一个率先改变状态，就返回
         let p1 = Promise.resolve(42);

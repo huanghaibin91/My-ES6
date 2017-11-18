@@ -32,7 +32,8 @@
         // 遍历器对象的next方法的运行逻辑：
         // （1）遇到yield表达式，就暂停执行后面的操作，并将紧跟在yield后面的那个表达式的值，作为返回的对象的value属性值
         // （2）下一次调用next方法时，再继续往下执行，直到遇到下一个yield表达式
-        // （3）如果没有再遇到新的yield表达式，就一直运行到函数结束，直到return语句为止，并将return语句后面的表达式的值，作为返回的对象的value属性值
+        // （3）如果没有再遇到新的yield表达式，就一直运行到函数结束，直到return语句为止，并将return语句后面的表达式的值，
+        // 作为返回的对象的value属性值
         // （4）如果该函数没有return语句，则返回的对象的value属性值为undefined
 
         var arr = [1, [
@@ -55,6 +56,8 @@
             console.log(f); // 1, 2, 3, 4, 5, 6
         }
 
+        // yield表达式如果用在另一个表达式之中，必须放在圆括号里面
+        // yield表达式用作函数参数或放在赋值表达式的右边，可以不加括号
         // yield 关键字只能用在生成器内部，用于其他任意位置都是语法错误，即使在生成器内部嵌套的函数中也不行
         function* createIterator(items) {
             items.forEach(function (item) {
@@ -64,6 +67,7 @@
         }
 
         // 通过 next() 方法向迭代器内传递参数。当一个参数被传递给next() 方法时，该参数就会成为生成器内部 yield 语句的值
+        // yield表达式本身没有返回值，或者说总是返回undefined。next方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值
         function* createIterator() {
             let first = yield 1;
             let second = yield first + 2; // 4 + 2
@@ -98,6 +102,7 @@
         console.log(iterator.next()); // "{ value: undefined, done: true }"
 
         // 生成器的 Return 语句
+        // return方法，可以返回给定的值，并且终结遍历 Generator 函数
         // 由于生成器是函数，你可以在它内部使用 return 语句，既可以让生成器早一点退出执行，也可以指定在 next() 方法最后一次
         // 调用时的返回值
         function* createIterator() {

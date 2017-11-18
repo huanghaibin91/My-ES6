@@ -1,126 +1,160 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>let and const</title>
-    </head>
-    <body>
-        <script type="text/javascript">
-            // 使用 var 关键字声明的变量，无论其实际声明位置在何处，都会被视为声明于所在函数的顶部（ 如果声明不在任意函数内，
-            // 则视为在全局作用域的顶部） 
-            
-            {
-                let a = 1; // not defined
-                const b = 2; // not defined
-                var c = 3; // 3
-            }
-            // console.log(a); // 报错
-            // console.log(b);  // 报错
-            console.log(c);
 
-            for (var i = 0; i < 10; i++) {}
-            console.log(i); // 10 用var声明的变量i泄露到全局，当条件不满足时i为10
-            for (let j = 0; j < 10; j++) {}
-            // console.log(j); // not defined，报错
+<head>
+    <meta charset="utf-8">
+    <title>let and const</title>
+</head>
 
-            var a2 = [];
-            for (var i = 0; i < 10; i++) {
-                a2[i] = function () {
-                    console.log(i); // 函数中引用的都是同一个i，i最后为11
-                };
-            }
-            a2[5](); // 不论a[i]()输出都是i，因为i是var声明的，在全局范围都有效
+<body>
+    <script type="text/javascript">
+        // 使用 var 关键字声明的变量，无论其实际声明位置在何处，都会被视为声明于所在函数的顶部（ 如果声明不在任意函数内，
+        // 则视为在全局作用域的顶部） 
 
-            var a3 = [];
-            for (let i = 0; i < 10; i++) {
-                a3[i] = function () {
-                    console.log(i);
-                };
-            }
-            a3[5](); // 5，使用let声明，变量仅在块级作用域中有效
+        {
+            let a = 1; // not defined
+            const b = 2; // not defined
+            var c = 3; // 3
+        }
+        // console.log(a); // 报错
+        // console.log(b);  // 报错
+        console.log(c);
 
-            for (let i = 0; i < 3; i++) { // 两个i独立, 父作用域
-                let i = 'a'; // 子作用域
-                console.log(i); // 输出3次a，说明for循坏中的括号与大括号是两个作用域
-            }
+        for (var i = 0; i < 10; i++) {}
+        console.log(i); // 10 用var声明的变量i泄露到全局，当条件不满足时i为10
+        for (let j = 0; j < 10; j++) {}
+        // console.log(j); // not defined，报错
 
-            console.log(foo); // undefined，声明提升了
-            var foo = 'foo'
-            // console.log(bar); // 报错，不会声明提升
-            let bar = 'bar';
+        var a2 = [];
+        for (var i = 0; i < 10; i++) {
+            a2[i] = function () {
+                console.log(i); // 函数中引用的都是同一个i，i最后为11
+            };
+        }
+        a2[5](); // 不论a[i]()输出都是i，因为i是var声明的，在全局范围都有效
 
-            // 如果区块中存在let和const命令，这个区域对这些命令声明的变量，从一开始就形成了封闭作用域，它所声明的变量就“绑定”
-            // （binding）这个区域，不再受外部的影响。凡是在声明之前就使用这些变量，就会报错，这在语法上，称为“暂时性死区”
-            var tmp = 'a';
-            if (true) {
-                tmp = 'b'; // 赋值操作报错，暂时性死区，报错
-                let tmp;
-            }
-            if (true) {
-                tem = 'a';
-                console.log(tem); // 报错
-                let tem;
-                console.log(tem); // undefined
-                tem = 'b';
-                console.log(tem); // b
-            }
-            function bar2 (x = y, y = 2) { // 在y声明之前将y赋值给x
-                return [x, y];
-            }
-            bar2(); // 报错，在y声明之前使用
+        var a3 = [];
+        for (let i = 0; i < 10; i++) {
+            a3[i] = function () {
+                console.log(i);
+            };
+        }
+        a3[5](); // 5，使用let声明，变量仅在块级作用域中有效
 
-            // let不允许在相同作用域中重复声明
-            function func (arg) {
-                // let arg; // 报错，重复声明参数
-            }
-            function func2() {
-                let a = 1;
-                // var a = 2; // 报错，重复声明
-            }
+        for (let i = 0; i < 3; i++) { // 两个i独立, 父作用域
+            let i = 'a'; // 子作用域
+            console.log(i); // 输出3次a，说明for循坏中的括号与大括号是两个作用域
+        }
 
-            // 块级作用域
-            // 避免在块级作用域内声明函数。如果确实需要，应该写成函数表达式，而不是函数声明
-            // 函数声明语句
-            {
-                let a = 'a';
-                function f () {
-                    return a;
+        console.log(foo); // undefined，声明提升了
+        var foo = 'foo'
+        // console.log(bar); // 报错，不会声明提升
+        let bar = 'bar';
+
+        // 如果区块中存在let和const命令，这个区域对这些命令声明的变量，从一开始就形成了封闭作用域，它所声明的变量就“绑定”
+        // （binding）这个区域，不再受外部的影响。凡是在声明之前就使用这些变量，就会报错，这在语法上，称为“暂时性死区”
+        var tmp = 'a';
+        if (true) {
+            tmp = 'b'; // 赋值操作报错，暂时性死区，报错
+            let tmp;
+        }
+        if (true) {
+            tem = 'a';
+            console.log(tem); // 报错
+            let tem;
+            console.log(tem); // undefined
+            tem = 'b';
+            console.log(tem); // b
+        }
+
+        typeof x; // ReferenceError，暂时性死区，在声明之前使用都会报错，这样如果使用typeof就会报错，这样typeof就不一定
+        // 安全
+        let x;
+
+        function bar2(x = y, y = 2) { // 在y声明之前将y赋值给x
+            return [x, y];
+        }
+        bar2(); // 报错，在y声明之前使用
+
+        // let不允许在相同作用域中重复声明
+        function func(arg) {
+            // let arg; // 报错，重复声明参数
+        }
+
+        function func2() {
+            let a = 1;
+            // var a = 2; // 报错，重复声明
+        }
+
+        // 无块级作用域
+        var tmp = new Date();
+
+        function f() {
+            console.log(tmp);
+            if (false) {
+                var tmp = 'hello world'; // var声明就没有块级作用域，且会变量提升，tmp提升顶部且为undefined
+            }
+        }
+        f(); // undefined
+
+        function f() {
+            console.log('I am outside!');
+        }
+        (function () {
+            if (false) { // if不会生成块级作用域，所以在它之中直接声明的函数声明会被提升到顶部
+                // 重复声明一次函数f
+                function f() {
+                    console.log('I am inside!');
                 }
             }
-            // 函数表达式
-            {
-                let a = 'a';
-                f = function () {
-                    return a;
-                }
+            f(); // I am inside!
+        }());
+
+
+        // 块级作用域
+        // 避免在块级作用域内声明函数。如果确实需要，应该写成函数表达式，而不是函数声明
+        // 函数声明语句
+        {
+            let a = 'a';
+
+            function f() {
+                return a;
             }
+        }
+        // 函数表达式
+        {
+            let a = 'a';
+            f = function () {
+                return a;
+            }
+        }
 
-            // const声明一个只读的常量。一旦声明，常量的值就不能改变
-            // const a; // 报错，常量不能改变，所以声明时就必须赋值
-            const a = 'a';
-            // const保证的并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据等同于常量，但是
-            // 复合类型如对象数组，对象是可变的，对象的地址是不变的
-            const foo2 = {};
-            foo2.prop = 123; // 成功
-            foo2 = {} // 报错，foo的地址不可改变，不能把foo指向另一个对象
+        // const声明一个只读的常量。一旦声明，常量的值就不能改变
+        // const a; // 报错，常量不能改变，所以声明时就必须赋值
+        const a = 'a';
+        // const保证的并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据等同于常量，但是
+        // 复合类型如对象数组，对象是可变的，对象的地址是不变的
+        const foo2 = {};
+        foo2.prop = 123; // 成功
+        foo2 = {} // 报错，foo的地址不可改变，不能把foo指向另一个对象
 
-            // let和const声明的全局变量不会成为顶层对象的属性
-            var a = 1;
-            let b = 2;
-            window.a // 1
-            window.b // undefined
+        // let和const声明的全局变量不会成为顶层对象的属性
+        var a = 1;
+        let b = 2;
+        window.a // 1
+        window.b // undefined
 
-            // ES5 只有两种声明变量的方法： var 命令和 function 命令。 ES6除了添加 let 和 const 命令，后面章节还会提到，另外
-            // 两种声明变量的方法： import 命令和 class 命令。所以，ES6 一共有6种声明变量的方法
+        // ES5 只有两种声明变量的方法： var 命令和 function 命令。 ES6除了添加 let 和 const 命令，后面章节还会提到，另外
+        // 两种声明变量的方法： import 命令和 class 命令。所以，ES6 一共有6种声明变量的方法
 
-            // let和const的比较：
-            // 常量声明与 let 声明一样，都是块级声明。这意味着常量在声明它们的语句块之外是无法被访问的，并且声明也不会被
-            // 提升；在同一作用域内定义一个已有变量时会抛出错误，无论是在全局还是函数作用域，无论该变量此前是用 var 声明的，
-            // 还是用 let 声明的
+        // let和const的比较：
+        // 常量声明与 let 声明一样，都是块级声明。这意味着常量在声明它们的语句块之外是无法被访问的，并且声明也不会被
+        // 提升；在同一作用域内定义一个已有变量时会抛出错误，无论是在全局还是函数作用域，无论该变量此前是用 var 声明的，
+        // 还是用 let 声明的
 
-            // 在默认情况下使用const ，仅当明确变量值需要被更改的情况下才使用 let 。其理论依据是大部分变量在初始化之后都应当
-            // 保持不变，因为预期外的改动是 bug 的源头之一
-            
-        </script>
-    </body>
+        // 在默认情况下使用const ，仅当明确变量值需要被更改的情况下才使用 let 。其理论依据是大部分变量在初始化之后都应当
+        // 保持不变，因为预期外的改动是 bug 的源头之一
+    </script>
+</body>
+
 </html>
