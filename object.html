@@ -48,6 +48,20 @@
         console.log(person[lastName]); // "Zakas"
         console.log(person["one name"]); // "Nic"
 
+        const keyA = {
+            a: 1
+        };
+        const keyB = {
+            b: 2
+        };
+
+        const myObject = {
+            [keyA]: 'valueA',
+            [keyB]: 'valueB'
+        };
+        // [keyA]和[keyB]得到的都是[object Object]，所以[keyB]会把[keyA]覆盖掉，而myObject最后只有一个[object Object]属性
+        myObject // Object {[object Object]: "valueB"}
+
         const obj = {
             get foo() {},
             set foo(x) {}
@@ -124,8 +138,6 @@
         }
         Object.setPrototypeOf(obj, proto);
         obj.foo() // "world"
-
-        
     </script>
 </body>
 

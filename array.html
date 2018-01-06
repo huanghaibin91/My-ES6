@@ -32,6 +32,18 @@
             var args = [...arguments];
         }
 
+        const [first, ...rest] = [1, 2, 3, 4, 5];
+        first // 1
+        rest // [2, 3, 4, 5]
+
+        const [first, ...rest] = [];
+        first // undefined
+        rest // []
+
+        const [first, ...rest] = ["foo"];
+        first // "foo"
+        rest // []
+
         // ES5 的写法
         Math.max.apply(null, [14, 3, 77]);
         // ES6 的写法
@@ -47,6 +59,7 @@
 
         // Array.of(),用于将一组值转化为数组,Array 方法没有参数、一个参数、三个参数时，返回结果都不一样。
         // 只有当参数个数不少于2个时， Array() 才会返回由参数组成的新数组。参数个数只有一个时，实际上是指定数组的长度
+        // 但Array.of都是将参数转为新数组
         Array.of(1, 2, 3); // [1, 2, 3]
         Array.of(1) // [1]
         Array(3) // [, , ,]
@@ -83,8 +96,6 @@
         // forEach(), filter(), every() 和some()都会跳过空位。
         // map()会跳过空位，但会保留这个值
         // join()和toString()会将空位视为undefined，而undefined和null会被处理成空字符串
-
-
     </script>
 </body>
 

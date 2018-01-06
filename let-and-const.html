@@ -9,7 +9,7 @@
 <body>
     <script type="text/javascript">
         // 使用 var 关键字声明的变量，无论其实际声明位置在何处，都会被视为声明于所在函数的顶部（ 如果声明不在任意函数内，
-        // 则视为在全局作用域的顶部） 
+        // 则视为在全局作用域的顶部），这是因为ES6之前JS没有块级作用域
 
         {
             let a = 1; // not defined
@@ -18,15 +18,15 @@
         }
         // console.log(a); // 报错
         // console.log(b);  // 报错
-        console.log(c);
+        console.log(c); // 3，使用var声明因为没有块级作用域变量会泄露到全局
 
         for (var i = 0; i < 10; i++) {}
         console.log(i); // 10 用var声明的变量i泄露到全局，当条件不满足时i为10
         for (let j = 0; j < 10; j++) {}
-        // console.log(j); // not defined，报错
+        // console.log(j); // not defined，报错，let和const声明的变量会绑定块级作用域
 
         var a2 = [];
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) { // 没有块级作用域，只有一个全局i
             a2[i] = function () {
                 console.log(i); // 函数中引用的都是同一个i，i最后为11
             };
@@ -34,7 +34,7 @@
         a2[5](); // 不论a[i]()输出都是i，因为i是var声明的，在全局范围都有效
 
         var a3 = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) { // 每次循环会创建一个块级作用域，并绑定当前i
             a3[i] = function () {
                 console.log(i);
             };
@@ -46,6 +46,7 @@
             console.log(i); // 输出3次a，说明for循坏中的括号与大括号是两个作用域
         }
 
+        // 使let和const声明不会发生声明提升
         console.log(foo); // undefined，声明提升了
         var foo = 'foo'
         // console.log(bar); // 报错，不会声明提升
@@ -112,6 +113,14 @@
 
 
         // 块级作用域
+        // 在ES6之前，利用立即执行函数模仿块级作用域
+        (function () {
+            // 
+        })()
+        // ES6拥有块级作用域
+        {
+            // 大括号中就是块级作用域
+        }
         // 避免在块级作用域内声明函数。如果确实需要，应该写成函数表达式，而不是函数声明
         // 函数声明语句
         {
